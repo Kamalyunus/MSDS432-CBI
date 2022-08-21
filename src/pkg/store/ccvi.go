@@ -23,12 +23,13 @@ func GetCCVIDetails(db *sql.DB) {
 	}
 
 	create_table := `CREATE TABLE IF NOT EXISTS "ccvi" (
+						"id"   SERIAL , 
 						"geography_type" VARCHAR(255), 
 						"community_area_or_zip" VARCHAR(255), 
 						"community_area_name" VARCHAR(255), 
 						"ccvi_score" VARCHAR(255), 
 						"ccvi_category" VARCHAR(255),												
-						PRIMARY KEY ("geography_type","community_area_or_zip") 
+						PRIMARY KEY ("id") 
 					);`
 
 	_, _err := db.Exec(create_table)

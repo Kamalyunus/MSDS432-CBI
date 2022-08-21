@@ -37,16 +37,17 @@ func GetTaxiTrips(db *sql.DB) {
 	}
 
 	create_table := `CREATE TABLE IF NOT EXISTS "taxi_trips" (
-						"trip_id" VARCHAR(255), 
-						"trip_start_timestamp" TIMESTAMP WITH TIME ZONE, 
-						"trip_end_timestamp" TIMESTAMP WITH TIME ZONE, 
-						"pickup_centroid_latitude" DOUBLE PRECISION, 
-						"pickup_centroid_longitude" DOUBLE PRECISION, 
-						"dropoff_centroid_latitude" DOUBLE PRECISION, 
-						"dropoff_centroid_longitude" DOUBLE PRECISION, 
-						"pickup_zip_code" VARCHAR(255), 
-						"dropoff_zip_code" VARCHAR(255), 
-						PRIMARY KEY ("trip_id") 
+					"id"   SERIAL , 
+					"trip_id" VARCHAR(255), 
+					"trip_start_timestamp" TIMESTAMP WITH TIME ZONE, 
+					"trip_end_timestamp" TIMESTAMP WITH TIME ZONE, 
+					"pickup_centroid_latitude" DOUBLE PRECISION, 
+					"pickup_centroid_longitude" DOUBLE PRECISION, 
+					"dropoff_centroid_latitude" DOUBLE PRECISION, 
+					"dropoff_centroid_longitude" DOUBLE PRECISION, 
+					"pickup_zip_code" VARCHAR(255), 
+					"dropoff_zip_code" VARCHAR(255), 
+					PRIMARY KEY ("id") 
 					);`
 
 	_, _err := db.Exec(create_table)
