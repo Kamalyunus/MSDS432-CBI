@@ -22,7 +22,6 @@ func GetCovidDetails(db *sql.DB) {
 	}
 
 	create_table := `CREATE TABLE IF NOT EXISTS "covid_weekly" (
-						"id"   SERIAL , 
 						"zip_code" VARCHAR(255), 
 						"week_number" VARCHAR(255), 
 						"week_start" TIMESTAMP WITH TIME ZONE, 
@@ -34,7 +33,7 @@ func GetCovidDetails(db *sql.DB) {
 						"percent_tested_positive_weekly" VARCHAR(255), 
 						"percent_tested_positive_cumulative" VARCHAR(255),
 						"population" VARCHAR(255),											
-						PRIMARY KEY ("id","zip_code","week_number") 
+						PRIMARY KEY ("zip_code","week_number") 
 					);`
 
 	_, _err := db.Exec(create_table)
