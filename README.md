@@ -12,7 +12,7 @@ This Readme provides the step by step guide to install and deploy source code to
     - pdadmin: Pulls a docker image for pgadmin, push it to google container registry and deploy it to cloud run
 3. Dockerfile: This is the docker file required for go-microservice
 4. go.mod/sum: To fulfill Go packages dependencies
-5. main.go: Go main file firing source code under 'src' folder
+5. main.go: Go main file firing source code under 'src' Folder
 
 ## Installation & Deployment Guide
 1. Postgres database setup
