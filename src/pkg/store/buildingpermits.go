@@ -29,8 +29,7 @@ func GetBuildingPermits(db *sql.DB) {
 	}
 
 	create_table := `CREATE TABLE IF NOT EXISTS "building_permits" (
-						"id"   SERIAL , 
-						"permit_id" VARCHAR(255) UNIQUE, 
+						"permit_id" VARCHAR(255) , 
 						"permit_code" VARCHAR(255), 
 						"permit_type" VARCHAR(255),  
 						"review_type"      VARCHAR(255), 
@@ -70,7 +69,7 @@ func GetBuildingPermits(db *sql.DB) {
 						"ycoordinate"      DOUBLE PRECISION ,
 						"latitude"      DOUBLE PRECISION ,
 						"longitude"      DOUBLE PRECISION,
-						PRIMARY KEY ("id") 
+						PRIMARY KEY ("permit_id") 
 					);`
 
 	_, _err := db.Exec(create_table)

@@ -37,8 +37,7 @@ func GetTaxiTrips(db *sql.DB) {
 	}
 
 	create_table := `CREATE TABLE IF NOT EXISTS "taxi_trips" (
-						"id"   SERIAL , 
-						"trip_id" VARCHAR(255) UNIQUE, 
+						"trip_id" VARCHAR(255), 
 						"trip_start_timestamp" TIMESTAMP WITH TIME ZONE, 
 						"trip_end_timestamp" TIMESTAMP WITH TIME ZONE, 
 						"pickup_centroid_latitude" DOUBLE PRECISION, 
@@ -47,7 +46,7 @@ func GetTaxiTrips(db *sql.DB) {
 						"dropoff_centroid_longitude" DOUBLE PRECISION, 
 						"pickup_zip_code" VARCHAR(255), 
 						"dropoff_zip_code" VARCHAR(255), 
-						PRIMARY KEY ("id") 
+						PRIMARY KEY ("trip_id") 
 					);`
 
 	_, _err := db.Exec(create_table)
