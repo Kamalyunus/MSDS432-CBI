@@ -29,8 +29,7 @@ func GetCommunityAreaUnemployment(db *sql.DB) {
 	}
 
 	create_table := `CREATE TABLE IF NOT EXISTS "community_area_unemployment" (
-						"id"   SERIAL , 
-						"community_area" VARCHAR(255) UNIQUE, 
+						"community_area" VARCHAR(255) , 
 						"community_area_name" VARCHAR(255), 
 						"birth_rate" VARCHAR(255), 
 						"general_fertility_rate" VARCHAR(255), 
@@ -59,7 +58,7 @@ func GetCommunityAreaUnemployment(db *sql.DB) {
 						"no_high_school_diploma" VARCHAR(255), 
 						"unemployment" VARCHAR(255), 
 						"per_capita_income" VARCHAR(255),
-						PRIMARY KEY ("id") 
+						PRIMARY KEY ("community_area") 
 					);`
 
 	_, _err := db.Exec(create_table)
