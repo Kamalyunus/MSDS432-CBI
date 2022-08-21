@@ -40,4 +40,4 @@ This Readme provides the step by step guide to install and deploy source code to
     - After login, click on Chicago_business intelligence
     - Click on schemas/tables and verify you see at least one of the CBI tables with data
 
-## Congratulations! you finished the tutorial
+## Congratulations! You finished the tutorial!!
