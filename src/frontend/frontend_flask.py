@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, render_template
 import pandas as pd
 from prophet import Prophet
 from google.cloud.sql.connector import Connector
@@ -31,10 +31,11 @@ pool = sqlalchemy.create_engine(
 )
     
 
-@app.route('/covid')
-def predict():
+@app.route('/forecast/plot')
+def forecast():
     zipcode = request.args.get('zipcode')
     horizon = request.args.get('horizon', type=int)
+
     with pool.connect() as db_conn:
         query="SELECT * FROM covid_weekly WHERE zip_code='"+zipcode+"'"
         df = pd.read_sql_query(query, db_conn)
@@ -47,8 +48,25 @@ def predict():
     forecast = model.predict(future_dates)
     fig=model.plot(forecast, xlabel="Weeks", ylabel="Weekly Covid Cases for Zipcode: " + zipcode)
     fig.savefig('prophetplot.svg')
-    connector.close()
     return send_file('prophetplot.svg')
+
+
+@app.route('/forecast/data')
+def table():
+    zipcode = request.args.get('zipcode')
+    horizon = request.args.get('horizon', type=int)
+    with pool.connect() as db_conn:
+        query="SELECT * FROM covid_weekly WHERE zip_code='"+zipcode+"'"
+        df = pd.read_sql_query(query, db_conn)
+
+    df_zipcode = df.rename(columns = {'week_start': 'ds','cases_weekly': 'y'})
+    df_zipcode['ds'] = df_zipcode['ds'].dt.date
+    model = Prophet(interval_width=0.95)
+    model.fit(df_zipcode) 
+    future_dates = model.make_future_dataframe(periods = horizon, freq="W", include_history=False)
+    forecast = model.predict(future_dates)
+    forecast.yhat=forecast.yhat.round()
+    return render_template('table.html', tables=[forecast[['ds','yhat']].to_html()], titles=[''])
 
 if __name__ == '__main__':
     # run app in debug mode on port 5000
