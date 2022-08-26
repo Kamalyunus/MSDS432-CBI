@@ -45,7 +45,7 @@ func GetCovidDetails(db *sql.DB) {
 	fmt.Println("Created Table for covid_weekly")
 
 	// set limit to 500.
-	var url = "https://data.cityofchicago.org/resource/yhhz-zm2v.json"
+	var url = "https://data.cityofchicago.org/resource/yhhz-zm2v.json?$limit=9000"
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
@@ -85,50 +85,19 @@ func GetCovidDetails(db *sql.DB) {
 			continue
 		}
 
-		week_number := covid_weekly_data_list[i].Week_number
-		if week_number == "" {
-			continue
-		}
-
-		week_end := covid_weekly_data_list[i].Week_end
-		if week_end == "" {
-			continue
-		}
-
-		population := covid_weekly_data_list[i].Population
-		if population == "" {
-			continue
-		}
-
-		percent_tested_positive_weekly := covid_weekly_data_list[i].Percent_tested_positive_weekly
-		if percent_tested_positive_weekly == "" {
-			continue
-		}
-
-		percent_tested_positive_cumulative := covid_weekly_data_list[i].Percent_tested_positive_cumulative
-		if percent_tested_positive_cumulative == "" {
-			continue
-		}
-
 		cases_weekly := covid_weekly_data_list[i].Cases_weekly
 		if cases_weekly == "" {
 			continue
 		}
 
+		week_number := covid_weekly_data_list[i].Week_number
+		week_end := covid_weekly_data_list[i].Week_end
+		population := covid_weekly_data_list[i].Population
+		percent_tested_positive_weekly := covid_weekly_data_list[i].Percent_tested_positive_weekly
+		percent_tested_positive_cumulative := covid_weekly_data_list[i].Percent_tested_positive_cumulative
 		cases_cumulative := covid_weekly_data_list[i].Cases_cumulative
-		if cases_cumulative == "" {
-			continue
-		}
-
 		case_rate_weekly := covid_weekly_data_list[i].Case_rate_weekly
-		if case_rate_weekly == "" {
-			continue
-		}
-
 		case_rate_cumulative := covid_weekly_data_list[i].Case_rate_cumulative
-		if case_rate_cumulative == "" {
-			continue
-		}
 
 		sql := `INSERT INTO covid_weekly ("zip_code", 
 			"week_number" , 
