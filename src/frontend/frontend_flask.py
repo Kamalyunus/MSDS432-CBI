@@ -48,6 +48,7 @@ def forecast():
     forecast = model.predict(future_dates)
     fig=model.plot(forecast, xlabel="Weeks", ylabel="Weekly Covid Cases for Zipcode: " + zipcode)
     fig.savefig('prophetplot.svg')
+    connector.close()
     return send_file('prophetplot.svg')
 
 
