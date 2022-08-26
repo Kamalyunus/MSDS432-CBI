@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
-	"main/src/pkg/api"
-	"main/src/pkg/store"
+	"main/src/backend/api"
+	"main/src/backend/store"
 	"net/http"
 	"os"
 	"time"
@@ -49,12 +49,12 @@ func main() {
 		// pull Taxi Trips and COVID data on daily basis
 
 		//These datasets are one time pull as they are historical
-		go store.GetCCVIDetails(db)
-		go store.GetCommunityAreaUnemployment(db)
+		//go store.GetCCVIDetails(db)
+		//go store.GetCommunityAreaUnemployment(db)
 
 		//one time pull to get history and then refreshed on regular cadence as schedule below
-		go store.GetBuildingPermits(db)
-		go store.GetTaxiTrips(db)
+		//go store.GetBuildingPermits(db)
+		//go store.GetTaxiTrips(db)
 		go store.GetCovidDetails(db)
 
 		http.HandleFunc("/", api.Handler)
@@ -76,9 +76,9 @@ func main() {
 
 		select {
 		case <-dayTicker.C:
-			go store.GetBuildingPermits(db)
+			//go store.GetBuildingPermits(db)
 		case <-weekTicker.C:
-			go store.GetTaxiTrips(db)
+			//go store.GetTaxiTrips(db)
 			go store.GetCovidDetails(db)
 		}
 	}

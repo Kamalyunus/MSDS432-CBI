@@ -13,14 +13,38 @@ steps:
   
 # Steps to build a docker image for go-microservice, push it to container registry and deploy it to cloud run.  
 - name: "gcr.io/cloud-builders/docker"
-  args: ['build', '-t', 'gcr.io/cbi-yunus/go-microservice','.']
+  args: ['build', '-t', 'gcr.io/cbi-yunus/go-backend-microservice','.']
 - name: "gcr.io/cloud-builders/docker"
-  args: ['push', 'gcr.io/cbi-yunus/go-microservice']
+  args: ['push', 'gcr.io/cbi-yunus/go-backend-microservice']
   
 - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
   entrypoint: gcloud
-  args: ['run', 'deploy','go-microservice', '--image','gcr.io/cbi-yunus/go-microservice', '--region','us-central1', '--min-instances','1', '--add-cloudsql-instances', 'cbi-yunus:us-central1:cbipostgres','--platform','managed', '--port','8080', '--allow-unauthenticated']
-images:
-- gcr.io/cbi-yunus/go-microservice
-- gcr.io/cbi-yunus/pgadmin
+  args: ['run', 'deploy','go-backend-microservice', '--image','gcr.io/cbi-yunus/go-backend-microservice', '--region','us-central1', '--min-instances','1', '--add-cloudsql-instances', 'cbi-yunus:us-central1:cbipostgres','--platform','managed', '--port','8080', '--allow-unauthenticated']
 
+# Steps to build a docker image for frontend-microservice, push it to container registry and deploy it to cloud run.  
+- name: "gcr.io/cloud-builders/docker"
+  args: ['build', '-t', 'gcr.io/cbi-yunus/frontend-microservice','.','-f','src/frontend/Dockerfile.Frontend']
+- name: "gcr.io/cloud-builders/docker"
+  args: ['push', 'gcr.io/cbi-yunus/frontend-microservice']
+  
+- name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+  entrypoint: gcloud
+  args: 
+    [
+      'run', 'deploy','frontend-microservice', 
+      '--image','gcr.io/cbi-yunus/frontend-microservice', 
+      '--region','us-central1', 
+      '--min-instances','1', 
+      '--memory','2G',
+      '--add-cloudsql-instances', 'cbi-yunus:us-central1:cbipostgres',
+      '--port','5000', '--allow-unauthenticated',
+      '--set-env-vars', 'DB_USER=postgres',
+      '--set-env-vars', 'DB_PASS=root',
+      '--set-env-vars', 'DB_NAME=chicago_business_intelligence',
+      '--set-env-vars', 'INSTANCE_UNIX_SOCKET=/cloudsql/cbi-yunus:us-central1:cbipostgres'
+    ]
+
+images:
+- gcr.io/cbi-yunus/go-backend-microservice
+- gcr.io/cbi-yunus/pgadmin
+- gcr.io/cbi-yunus/frontend-microservice
