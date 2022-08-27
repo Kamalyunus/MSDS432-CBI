@@ -1,4 +1,4 @@
-# MSDS432-Phase3-Chicago Business Intelligence
+# MSDS432-Full-Stack-Chicago Business Intelligence App
 This repository contains source code to complete Phase-4 requirements for the Chicago Business Intelligence for Strategic Planning project.
 This Readme provides the step by step guide to install and deploy full-stack source code to Google Cloud. 
 
